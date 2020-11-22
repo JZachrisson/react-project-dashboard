@@ -1,18 +1,15 @@
-import { useState } from 'react';
+import React from 'react';
+import useForm from './signInHook';
+import validate from './validate';
 
-const CreateProject = (initialValues, validate) => {
-  const [inputs, setInputs] = useState(initialValues);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-  };
-
-  const handleInputChange = (event) => {
-    setInputs((inputs) => ({
-      ...inputs,
-      [event.target.name]: event.target.value,
-    }));
-  };
+const SignInForm = () => {
+  const { inputs, handleInputChange, handleSubmit, errors } = useForm(
+    {
+      email: '',
+      password: '',
+    },
+    validate
+  );
 
   return (
     <div className="container">
@@ -48,4 +45,4 @@ const CreateProject = (initialValues, validate) => {
   );
 };
 
-export default CreateProject;
+export default SignInForm;

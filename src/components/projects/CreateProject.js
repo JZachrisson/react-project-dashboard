@@ -1,10 +1,11 @@
 import { useState } from 'react';
 
-const CreateProject = (initialValues, validate) => {
-  const [inputs, setInputs] = useState(initialValues);
+const CreateProject = () => {
+  const [inputs, setInputs] = useState({ title: '', content: '' });
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(inputs);
   };
 
   const handleInputChange = (event) => {
@@ -17,30 +18,27 @@ const CreateProject = (initialValues, validate) => {
   return (
     <div className="container">
       <form onSubmit={handleSubmit} className="white">
-        <h5 className="grey-text text-darken-3">Sign In</h5>
+        <h5 className="grey-text text-darken-3">Create new project</h5>
         <div className="input-field">
-          <label>Email</label>
+          <label>Title</label>
           <input
-            type="email"
-            name="email"
+            type="text"
+            name="title"
             onChange={handleInputChange}
-            value={inputs.email}
+            value={inputs.title}
           />
         </div>
-        {errors.email && <p>{errors.email}</p>}
         <div className="input-field">
-          <label>Password</label>
-          <input
-            type="password"
-            name="password"
+          <label>Project Content</label>
+          <textarea
+            name="content"
             onChange={handleInputChange}
-            value={inputs.password}
-          />
+            className="materialize-textarea"
+          ></textarea>
         </div>
-        {errors.password && <p>{errors.password}</p>}
         <div className="input-field">
           <button type="submit" className="btn pink lighten-1 z-depth-0">
-            Login
+            Create
           </button>
         </div>
       </form>

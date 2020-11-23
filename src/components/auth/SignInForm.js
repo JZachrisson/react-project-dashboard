@@ -1,16 +1,25 @@
-import React from 'react';
-import useForm from './signInHook';
-import validate from './validate';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { signIn } from '../../store/actions/authActions';
+import { Redirect } from 'react-router-dom';
 
-const SignInForm = () => {
-  const { inputs, handleInputChange, handleSubmit, errors } = useForm(
-    {
-      email: '',
-      password: '',
-    },
-    validate
-  );
+const SignInForm = ({ authError, signIn, auth }) => {
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    signIn(credentials);
+  };
+
+  const handleInputChange = (event) => {
+    setCredentials((credentials) => ({
+      ...credentials,
+      [event.target.name]: event.target.value,
+    }));
+  };
+  if (auth.uid) {
+    return <Redirect to="/" />;
+  }
   return (
     <div className="container">
       <form onSubmit={handleSubmit} className="white">
@@ -21,28 +30,42 @@ const SignInForm = () => {
             type="email"
             name="email"
             onChange={handleInputChange}
-            value={inputs.email}
+            value={credentials.email}
           />
         </div>
-        {errors.email && <p>{errors.email}</p>}
         <div className="input-field">
           <label>Password</label>
           <input
             type="password"
             name="password"
             onChange={handleInputChange}
-            value={inputs.password}
+            value={credentials.password}
           />
         </div>
-        {errors.password && <p>{errors.password}</p>}
         <div className="input-field">
           <button type="submit" className="btn pink lighten-1 z-depth-0">
             Login
           </button>
+          <div className="red-text center">
+            {authError ? <p>{authError}</p> : null}
+          </div>
         </div>
       </form>
     </div>
   );
 };
 
-export default SignInForm;
+const mapStateToProps = (state) => {
+  return {
+    authError: state.auth.authError,
+    auth: state.firebase.auth,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    signIn: (creds) => dispatch(signIn(creds)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignInForm);

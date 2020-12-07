@@ -48,7 +48,7 @@ function AuthIsLoaded({ children }) {
     return (
       <div className="center">
         {' '}
-        <p>Loading Mario Plan...</p>
+        <p>Loading...</p>
       </div>
     );
   return children;

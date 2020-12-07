@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { connect } from 'react-redux';
 import { createProject } from '../../store/actions/projectActions';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 
-const CreateProject = ({ auth, createProject }) => {
+const CreateProject = ({ auth, createProject, props }) => {
   const [inputs, setInputs] = useState({ title: '', content: '' });
+  let history = useHistory();
 
   const handleSubmit = (event) => {
     event.preventDefault();
     createProject(inputs);
+    history.push('/');
   };
 
   const handleInputChange = (event) => {
